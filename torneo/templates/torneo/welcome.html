@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %} {% load otree static %} 
+{% load user_agents %}
+
+{% block content %}
+
+{% if consent and consent_account %}
+    <h1>Bienvenida</h1>
+
+    <p> Bienvenido a esta actividad en la que realizará, varias veces, la siguiente tarea: pasar una secuencia de números a letras. Sus ganancias dependerán del azar, y de la cantidad de tareas que usted y otros participantes realicen. </p> 
+
+    <p> Por favor silencie su teléfono móvil y evite cualquier elemento distractor que pueda interrumpirlo en los siguientes 30 minutos.</p>
+
+    <p> La actividad tendrá seis (6) rondas dividas en dos (2) Etapas: </p>
+
+    <p> <b>Etapa 1. Ronda de Práctica (Ronda 0)</b>: Tendrá 90 segundos para familiarizarse con la tarea de pasar números a letras. Debe tomar esto en serio y realizar correctamente el mayor número de tareas posibles. </p>
+
+    <p> <b>Etapa 2. Torneo (Rondas 1 a 5)</b>: Por cada tarea completa recibirá una suma de dinero, que dependerá de si usted tiene un Contrato A o un Contrato B. Las tareas son iguales en ambos contratos, pero los que tienen Contrato A reciben el doble por tarea, respecto a los Contrato B. </p>
+
+    <p><i>¿Por qué le llamamos torneo?</i></p>
+
+    <p>Al final de las rondas 1, 2, 3 y 4, podrá ser cambiado de contrato,  según su rendimiento y el azar. Es decir, si comienza con el Contrato A puede ser relegado al Contrato B, y si comienza con el Contrato B pueden ser promovido al Contrato A. </p>
+
+    <p>Al inicio de la Etapa 2 se explicará en detalle los cómo se realizan los cambios de contrato. </p>
+
+    <p> Al final se escogerá al azar una ronda de la 1 a 5 para calcular su ganancia total de la actividad. El pago dependerá de cuántas tareas realizó, y del tipo de contrato que usted tenía, en la ronda seleccionada. </p>
+
+    <p> Por favor, escribanos por chat. Uno de los monitores se comunicará con usted y le ofrecerá ayuda. </p> 
+
+    <p>
+        {% formfields %}
+    </p>
+    {% next_button %} 
+
+{% else %}
+    <h1>Muchas gracias!</h1>
+    <p>Su participación en este estudio terminó.</p>
+{% endif %}
+{% endblock %}

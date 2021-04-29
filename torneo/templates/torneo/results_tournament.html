@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Resultados Ronda {{round}}
+{% endblock %}
+
+{% block content %}
+    <p> Usted completó {{tasks}} tareas. Sus ganancias en esta ronda son {{payoff_round}} </p>
+    <p> Su posición en el ranking grupal es {{position_group}} de 4. </p>
+    <b>
+    {% if contract_A %}
+    	{% if position_contract == 1 %}
+        <p> Usted fue quien más tareas realizó entre las personas con Contrato A de su grupo. </p>
+        {% else %}
+        <p> Usted fue quien menos tareas realizó entre las personas con Contrato A de su grupo. </p>
+        {% endif %} 
+    {% else %}
+        
+        {% if position_contract == 1 %}
+        <p> Usted fue quien más tareas realizó entre las personas con Contrato B de su grupo. </p>
+        {% else %}
+        <p> Usted fue quien menos tareas realizó entre las personas con Contrato B de su grupo. </p>
+        {% endif %} 
+    {% endif %} 
+    </b>
+    {% if round < 5 %}
+    	<p> La probabilidad de que se le asigne un Contrato A para la siguiente ronda es: <b>{{likelihood_contract_A}}</b> </p>
+    {% endif %} 
+    {% next_button %}
+{% endblock %}

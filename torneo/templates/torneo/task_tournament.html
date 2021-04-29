@@ -1,0 +1,340 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block styles %}
+<style type="text/css">
+
+._otree-content{
+    width:90vw;
+    background-color: rgb(255 255 255);
+}
+
+.page-header{
+    margin: 0
+}
+
+.otree-body{
+    margin-left:5vw;
+}
+
+.otree-form-errors{
+    display: none;
+    border: 1px solid rgb(255, 217, 204);
+    background-color: rgb(255, 179, 153);
+    text-align: center;
+
+}
+
+.task-container{
+    display: grid;
+    width: 50%;
+    margin: auto;
+    border: 1px solid rgb(226, 238, 221);
+    padding: 10px;
+    align-items: center;
+    justify-items: center;
+
+
+}
+
+.task-subcontainer{
+    display: grid;
+    width: auto;
+    margin: auto;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: auto repeat({{Constants.letters_per_word}}, auto);
+    grid-template-rows: 1fr 1fr;
+    grid-column-gap: 1vw;
+    grid-row-gap: 0.5vw;
+}
+
+.legend{
+    display: grid;
+    grid-template-columns: repeat(5, 1em);
+    grid-template-rows: 1;
+    grid-column-gap: 1vw;
+}
+
+.legend-letter{
+    font-size: 1.5vw;
+    background-color: #cccccc;
+}
+
+.legend-code{
+    font-size: 1.5vw;
+    background-color: #cccccc;
+}
+
+.task-code{
+    font-size: 2vw;
+    text-align: center;
+    background-color: rgb(196, 221, 187);
+    width: 100%;
+    height: 100%;
+      display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.task-letter{
+    font-size: 2vw;
+    width: 3em;
+}
+
+.test{
+  display: block;
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  font-size: 2vw;
+  height: 2ex;
+  text-align: center;
+  background-color: rgb(200, 200, 200);
+}
+
+td {
+  font-size: 1.5vw;
+  height: 3.5ex;
+  text-align: center;
+}
+
+.button-container{
+    display: grid;
+    grid-template-columns: 6em auto;
+    grid-template-rows: 1;
+    grid-column-gap: 1vw
+    width: 10%;
+margin-left: 47%;
+}
+
+
+
+</style>
+{% endblock %}
+
+
+
+{% block title %}
+    Tarea Ronda {{round}} 
+{% endblock %}
+
+{% block content %}
+<p> Se le ha asignado un <b>Contrato
+{% if contract_A %}
+    A
+{% else %}
+    B 
+{% endif %} 
+</b>:  recibe <b>
+{% if contract_A %}
+    {{payoff_A}}
+{% else %}
+    {{payoff_B}}
+{% endif %} 
+</b> por tarea correcta. </p>
+
+<input type="hidden" name="tasks" id="tasks" value="" />
+<input type="hidden" name="mistakes" id="mistakes" value="" />
+
+<div class="test" id="hide_task">
+    <p style="font-size: 1.5vw;text-align: center;">Claves</p>
+    <table>
+        <tr>
+         {% for l in legend_list %}
+        <th style="width:20%" id="lcid_{{l}}"></td>
+        {% endfor%}
+        </tr>
+        <tr>
+            {% for l in legend_list %}
+        <td style="width:20%" id="llid_{{l}}"></td>
+        {% endfor%}
+        </tr>
+    </table>
+    <br><br>
+
+<!-- <form id="test_frm"> -->
+<div class="task-container">
+<div class="task-subcontainer">
+    <div style="font-size: 1.8vw">Código: &nbsp;&nbsp;&nbsp;&nbsp;   </div>
+        {% for l in task_list%}
+                <div class="task-code" id="task_code_{{l}}" type="number"></div>
+        {% endfor %}
+    <div style="font-size: 1.8vw">Letra:   &nbsp;&nbsp;&nbsp;&nbsp;  </div>
+        {% for l in task_list%}
+                <input type="text" onkeyup="this.value = this.value.toUpperCase();" class="task-letter" id="task_letter_{{l}}" >
+        {% endfor %}
+    </div>
+</div>
+
+        <div class="otree-form-errors" id="error-form"></div>
+
+<br><br>
+<div class="button-container">
+<input type="button" onclick="myFunction()" value="Enviar">
+</div>
+
+<br><br>
+</div>
+
+
+<script>
+    $(document).keydown(function(objEvent) {
+       if (objEvent.keyCode == 9) {  //tab pressed
+           objEvent.preventDefault(); // stops its action
+       }
+    })
+
+  letters_per_word = {{Constants.letters_per_word}};
+  alphabet = genCharArray(5);
+  word_letters = alphabet;
+  word = genNewWord();
+  dict = genNewDict();
+  legend_letters = genNewList();
+  b = numbers();
+
+
+  dict=genNewDict();
+
+  shuffle(legend_letters)
+  for (var i = 0; i <= 4; i++) {
+    document.getElementById("llid_"+i).innerText=legend_letters[i];
+    document.getElementById("lcid_"+i).innerText=dict[legend_letters[i]];
+  }
+
+   for (var i=0; i< letters_per_word; i++) {
+    document.getElementById("task_code_"+i).innerText=dict[word[i]];
+  }
+
+function myFunction() {
+    errors=checkSolution();
+
+  if (errors == 0) {
+      var temp = Number(document.getElementById("tasks").value) + 1
+      document.getElementById("tasks").value = temp;
+      document.getElementById("error-form").style.display = "none";
+
+      word = genNewWord();
+      legend_letters = genNewList();
+      dict=genNewDict();
+
+
+      for (var i=0; i< letters_per_word; i++) {
+        document.getElementById("task_code_"+i).innerText=dict[word[i]];
+        document.getElementById("task_letter_"+i).value='';
+      }
+
+      shuffle(legend_letters)
+      for (var i = 0; i <= 4; i++) {
+        document.getElementById("llid_"+i).innerText=legend_letters[i];
+        document.getElementById("lcid_"+i).innerText=dict[legend_letters[i]];
+      }
+
+
+  }
+  else if (errors > 0) {
+      var temp = Number(document.getElementById("mistakes").value) + 1
+      document.getElementById("mistakes").value = temp;
+      document.getElementById("error-form").innerText = "Hay "+errors+" errores.";
+      document.getElementById("error-form").style.display = "block";
+  }
+  else {
+        document.getElementById("tasks").value = "0";
+  }
+}
+
+function checkSolution() {
+    var answers = [];
+    var errors = 0;
+    for (var i = 0; i < letters_per_word; i++) {
+        answers[i] = (document.getElementById("task_letter_"+i).value);
+        if (word[i] != answers[i]) {errors += 1}
+
+    }
+    return errors
+}
+
+function genNewWord() {
+    shuffle(word_letters)
+    word = [];
+      for (var i = 0; i < 5; i++) {
+           word[i] = word_letters[i];
+       }
+    return word
+}
+
+function genNewList() {
+    shuffle(word)
+    legend_letters = [];
+      for (var i = 0; i < letters_per_word; i++) {
+           legend_letters[i] = word[i];
+       }
+    return legend_letters
+}
+
+function genCharArray(length) {
+    var randomChars = 'ZDJKL';
+    var charactersLength = randomChars.length
+    var a = [];
+    for ( var i = 0; i < length; i++ ) {
+       a[i]= randomChars.charAt(i);
+   }
+   return a;
+}
+
+
+function shuffle(a) {
+    var j, x, i;
+    var b=a;
+    for (i = b.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = b[i];
+        b[i] = b[j];
+        b[j] = x;
+    }
+    return a;
+}
+
+function randomDataSet(dataSetSize, minValue, maxValue) {
+  return new Array(dataSetSize).fill(0).map(function(n) {
+    return Math.floor(Math.random() * (maxValue - minValue) + minValue);
+  });
+}
+
+function genNewDict() {
+    b = numbers();
+    dict = {}
+    for (var i = 0; i < 5; i++) {
+        dict[word_letters[i]] = b[i];
+    }
+
+    shuffle(dict)
+    return dict
+
+}
+
+
+function numbers() {
+    var b = [];
+    for ( var i = 0; i < 10; i++ ) {
+       b[i]= i;
+   }
+   shuffle(b)
+   return b;
+}
+
+
+</script>
+
+
+{% endblock %}

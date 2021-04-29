@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load user_agents %}
+
+{% block content %}
+
+<h1>Consentimiento Informado</h1>
+<p>Usted participará en un juego de decisiones económicas. 
+    Sus ganancias en esta actividad estarán en un rango entre $10.000 y $30.000 pesos. 
+    Las ganancias dependerán de sus decisiones y de las decisiones de otros participantes en esta actividad.</p> 
+<p><b>Su información (decisiones y ganancias) será utilizada de manera confidencial y para fines estrictamente académicos por los investigadores del proyecto. </b></p>
+<p>Su participación es voluntaria. Usted puede retirarse en cualquier momento. 
+    Sin embargo, si decide retirarse antes de que el ejercicio termine, usted no recibirá ninguna ganancia. 
+    Usted también podrá ser retirado de la actividad si luego de un segundo llamado de atención por estar realizando otras actividades, 
+    no continúa con las tareas indicadas.
+    En este caso tampoco recibirá ninguna ganancia.</p>
+<p>Si completa la actividad, 
+    sus ganancias serán procesadas después de que usted termine de responder una encuesta en la que deberá contestar algunas preguntas sobre usted y la actividad.</p> 
+<p>Tras conocer sus ganancias usted debe diligenciar un cuestionario de pago con sus datos personales (nombre, documento de identidad y cuenta bancaria). 
+    Transferiremos sus ganancias en las siguientes 48 horas hábiles, <b>una vez contemos con la información de su cuenta</b>.</p>
+<p>Su información bancaria será borrada una vez se realice su pago.</p>
+<p>Si usted quiere una copia de este consentimiento informado, por favor, pregúntenos por ella y se la enviaremos por correo electrónico. 
+  Si tiene otras preguntas o inquietudes, puede escribir al siguiente correo: <a href="mailto:rebel@urosario.edu.co" target="_blank">rebel@urosario.edu.co</a>  </p>
+
+<p>Haga clic en las dos casillas si está de acuerdo en continuar y si decide no continuar con el estudio por favor cierre esta ventana y abandone esta sesión del estudio.</p> 
+
+<p><b>ACEPTACIÓN:</b></p>
+<p>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="True" name="consent" id="consent">
+    <label class="form-check-label" for="consent">
+      Comprendo la información anterior y mis derechos y compromisos durante este ejercicio. 
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="True" name="consent_account" id="consent_account">
+    <label class="form-check-label" for="consent_account">
+      Comprendo que recibiré mi pago en las 48 horas hábiles luego de enviar correctamente mi información bancaria.
+    </label>
+  </div>
+</p>
+{% next_button %} 
+{% endblock %}

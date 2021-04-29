@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %} {% load otree static %} 
+
+{% block title %} Etapa 1: Ronda de Práctica {% endblock %} 
+
+
+{% block content %}
+
+<p> Usted tendrá 90 segundos para probar la tarea que deberá realizar en las siguientes rondas. Trate de completar el mayor número de tareas posibles.</p> 
+
+</p>Al finalizar esta etapa, la mitad de los participantes serán asignados al Contrato A y la otra mitad al Contrato B.</p>
+
+<p><i>¿Cómo será la asignación inicial para el Torneo?</i><br>
+
+    {% if merit %}
+        Según su rendimiento en la ronda de práctica: Los participantes que completen el mayor número de tareas serán asignados al contrato A y la otra mitad al contrato B.
+    {% else %}
+    Al azar: cada persona tendrá un 50% de probabilidad de recibir el Contrato A y un 50% de probabilidad de recibir el contrato B. Como el torneo le permitirá cambiar de contrato según su desempeño y el de los demás, es importante que aproveche esta ronda de práctica para familiarizarse con la tarea e ir poniendo a prueba sus capacidades. 
+    {% endif %}
+</p>
+</p> Recuerde que el Torneo le permitirá cambiar de contrato según su desempeño y el de los demás, por eso es importante que aproveche esta ronda de práctica para familiarizarse con la tarea e ir poniendo a prueba sus capacidades.</p>
+
+{% next_button %} 
+
+{% endblock %}

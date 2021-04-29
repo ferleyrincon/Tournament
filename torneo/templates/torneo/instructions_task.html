@@ -1,0 +1,33 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load static %}
+
+{% block title %} Descripción de la tarea{% endblock %} 
+
+{% block content %}
+    <p>A continuación, usted va a ver una secuencia de cinco (5) números que debe traducir a una serie de consonantes (Z, D, J, K, L).</p>
+
+    <p>Sólo hay 5 letras en la traducción, y serán las mismas en todas las traducciones. 
+        La siguiente imagen muestra la ubicación de esas cinco letra. Esto lo puede ver debajo y confirmar en su teclado.</p>
+    
+        <p class="aligncenter" >
+            <img  class="imagen" src = "{% static 'torneo/Teclado.jpeg' %}"/>
+            </p>    
+
+    <p>Como a cada <b>NÚMERO le corresponde una LETRA</b>, debe escribir esta LETRA como respuesta en cada casilla vacía.</p>
+
+    <p>Cada vez que complete una secuencia, haga <i>click</i> en “Enviar” </p>
+
+    <p> Si la traducción tiene errores, el computador le pedirá que los corrija. <b>Si no tiene errores, la tarea quedará completa.</b></p>
+
+    <p> Cada vez que complete una secuencia cambiarán la LETRA que corresponde a cada NÚMERO. Cada traducción es diferente a la anterior.</p>
+
+    <p> Usted dispondrá de 90 segundos para completar todas las traducciones que pueda.</p>
+
+
+
+<p> Por favor oprima “Siguiente”  para comenzar. Una vez haga <i>click</i> empezará a correr el tiempo.</p>
+
+{% next_button %}
+
+{% endblock %}

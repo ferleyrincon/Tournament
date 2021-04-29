@@ -1,0 +1,13 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Resultados Ronda {{round}} 
+{% endblock %}
+
+{% block content %}
+    <p> Usted completó {{ tasks }} tareas. </p>
+    {% next_button %}
+{% endblock %}
+
+

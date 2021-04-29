@@ -1,0 +1,88 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Etapa 2: Torneo
+{% endblock %}
+
+{% block content %}
+
+    <p> Esta etapa tendrá 5 rondas. En cada ronda usted hará parte de un grupo de cuatro (4) personas. Dos (2) tendrán un Contrato A y dos (2) un Contrato B. Los otros 3 miembros de su grupo irán cambiando ronda tras ronda.</p> 
+
+    <p> En cada ronda usted tendrá 90 segundos para realizar el mayor número de tareas posibles. El pago por cada tarea completada dependerá del contrato al que fue asignado en la ronda anterior: </p>
+    
+    <ul>
+        <li> Contrato A: recibe $2.000 por tarea correcta. </li>
+        <li> Contrato B: recibe $1.000 por tarea correcta. </li>
+    </ul>
+
+    <p> Al final de cada ronda se reasignarán los Contratos A y B según el número de tareas completadas respecto a los otros miembros del grupo. </p>
+
+    <b> Probabilidad de tener un Contrato A en la siguiente ronda: </b>
+    
+    <ul>
+        <li> Primer puesto de los jugadores con Contrato A: 
+            {% if discrimination == 0 %}
+                50%
+            {% else %}
+                100%
+            {% endif %}  
+        </li> 
+        <li> Segundo puesto de los jugadores con Contrato A: 
+            {% if discrimination == 0 %}
+                50%
+            {% else %}
+                <i>Repechaje</i>
+            {% endif %}     
+        </li> 
+        <li> Primer puesto jugadores con Contrato B:
+            {% if discrimination == 0 %}
+                50%
+            {% else %}
+                <i>Repechaje</i>
+            {% endif %}
+        </li> 
+        <li> Segundo puesto jugadores con Contrato B:  
+            {% if discrimination == 0 %}
+                50%
+            {% else %}
+                0%
+            {% endif %}  
+        </li> </li> 
+    </ul>
+
+    <p> <b>Nota:</b> Si los dos participantes con el mismo contrato tienen el mismo número de tareas completas, el primer puesto del contrato se define al azar. </p>
+    
+    <p> En otras palabras, 
+        {% if discrimination == 0 %}
+            la probabilidad de ser cambiar de contrato será del 50% para todos los jugadores.
+        
+        {% else %}
+                El “ganador” con el Contrato A y el “perdedor” del Contrato B van a mantener sus contratos. 
+                Para las otras dos personas del grupo, es posible que haya un cambio en el contrato.</p> 
+                <p> La probabilidad de ser reasignado dependerá del número relativo de tareas realizadas, en algo que llamaremos “repechaje”.</p> 
+                
+                <p><b> ¿En qué consiste el repechaje? </b><p>
+
+                <p>Hay dos participantes en el repechaje. Entre más tareas correctas haga, y menos haga el otro participante, más chance de quedarse con el Contrato A. </p>
+                
+                    {% if discrimination == 1 %}
+                        <p>Usted ganará el Contrato A si hace más tareas completas que el otro participante en repechaje.</p>
+                    {% else %}
+                        <p>Su probabilidad de ganar el Contrato A es igual a sus tareas completas, dividido en las tareas completas de los dos participantes en repechaje: </p>
+                        <div class="eq-c">
+                        <i>Probabilidad del Contrato A</i> =
+                        <div class="fraction">
+                        <span class="fup"><i>Mis tareas</i></span>
+                        <span class="bar">/</span>
+                        <span class="fdn"><i>Mis tareas+Tareas del otro</i></span>
+                        </div>
+                        </div>
+                    {% endif %} 
+        {% endif %} 
+    </p>
+    {% next_button %}
+
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Contrato Ronda {{round}}  
+{% endblock %}
+
+{% block content %}
+	<p> En la siguiente ronda usted tendrá un <b>Contrato
+	{% if contract_A_tournament %}
+        A
+    {% else %}
+        B
+    {% endif %} 
+    </p></b>
+    {% next_button %}
+
+{% endblock %}

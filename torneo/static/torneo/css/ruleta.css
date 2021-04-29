@@ -1,0 +1,59 @@
+.semi-circulo-s {
+  width: 300px;
+  height: 150px;
+  /* border: 2px solid #555; */
+  background: #FE4241;
+  -moz-border-radius: 200px 200px 0 0;
+  -webkit-border-radius: 200px 200px 0 0;
+  border-radius: 200px 200px 0 0;
+}
+
+.semi-circulo-i {
+  width: 300px;
+  height: 150px;
+  /* border: 2px solid #555; */
+  background: #21A2FE;
+  -moz-border-radius: 0 0 200px 200px;
+  -webkit-border-radius: 0 0 200px 200px;
+  border-radius: 0 0 200px 200px;
+}
+
+.font {
+  color: #FFFFFF;
+  font-size: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.text-rotate {
+  transform: rotate(-180deg);
+}
+
+.box-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 95vh; */
+}
+
+.triangle-bottom {
+  display: flex;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 30px 30px 0 30px;
+  border-color: #585858 transparent transparent transparent;
+}
+
+.animation {
+  cursor: -webkit-grab;
+  cursor: grab;
+  transition: all 5s;
+  z-index: 0;
+  margin-top: -10px;
+}
