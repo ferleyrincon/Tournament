@@ -4,6 +4,12 @@
 
 {% block content %}
 
+
+{% if request|is_mobile or request|is_tablet %}
+<h1>Lo sentimos!</h1>
+La participación en este estudio NO está permitida en dispositivos móviles o tabletas.
+
+{% else %}
 <h1>Consentimiento Informado</h1>
 <p>Usted participará en un juego de decisiones económicas. 
     Sus ganancias en esta actividad estarán en un rango entre $10.000 y $30.000 pesos. 
@@ -40,4 +46,5 @@
   </div>
 </p>
 {% next_button %} 
+{% endif %}
 {% endblock %}
