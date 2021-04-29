@@ -150,6 +150,7 @@ class thanks(Page):
         return self.round_number == Constants.num_rounds
     def vars_for_template(self): 
         return {
+            'identificador': self.player.in_round(1).identificador,
             "round_payoff" :  Constants.round_payoff - 1,
             "payoff_total" :  self.player.pago,
             'payoff_complete': self.player.payoff_complete,
