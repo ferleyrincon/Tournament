@@ -1,0 +1,4 @@
+-r requirements_base.txt
+psycopg2>=2.5.1
+django_user_agents >= 0.4.0
+
