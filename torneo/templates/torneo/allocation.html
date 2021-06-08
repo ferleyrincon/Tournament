@@ -2,17 +2,19 @@
 {% load otree static %}
 
 {% block title %}
-    Contrato Ronda {{round}}  
+    Contrato para la ronda  {{round}}
 {% endblock %}
 
 {% block content %}
-	<p> En la siguiente ronda usted tendrá un <b>Contrato
+	<p> En la ronda {{round}} del Torneo ronda usted tendrá un <b><i>Contrato
 	{% if contract_A_tournament %}
-        A
+        A. <br>
+        </i></b>Recibirá $2.000 por cada <i>secuencia</i> correcta que haga.
     {% else %}
-        B
+        B. <br>
+        </i></b>Recibirá $1.000 por cada <i>secuencia</i> correcta que haga.
     {% endif %} 
-    </p></b>
+    </p>
     {% next_button %}
 
 {% endblock %}

@@ -2,30 +2,136 @@
 {% load otree static %}
 
 {% block title %}
-    Resultados Ronda {{round}}
+    Resultados: ronda {{round}} de 5
 {% endblock %}
 
 {% block content %}
-    <p> Usted completó {{tasks}} tareas. Sus ganancias en esta ronda son {{payoff_round}} </p>
-    <p> Su posición en el ranking grupal es {{position_group}} de 4. </p>
-    <b>
-    {% if contract_A %}
-    	{% if position_contract == 1 %}
-        <p> Usted fue quien más tareas realizó entre las personas con Contrato A de su grupo. </p>
-        {% else %}
-        <p> Usted fue quien menos tareas realizó entre las personas con Contrato A de su grupo. </p>
-        {% endif %} 
-    {% else %}
+    <p> Usted hizo {{tasks}} secuencias correctamente.<br>
+        Sus ganancias en esta ronda son {{payoff_round}}.</p>
+
+    {% if round < num_rounds %}
+
+    <!--Ranking -->
+    <h5> Ranking y probabilidad de tener un Contrato A en la siguiente ronda</h5>
+    <style>
+        table {
+          border-collapse: collapse;
+          width: 80%;
+        }
         
-        {% if position_contract == 1 %}
-        <p> Usted fue quien más tareas realizó entre las personas con Contrato B de su grupo. </p>
-        {% else %}
-        <p> Usted fue quien menos tareas realizó entre las personas con Contrato B de su grupo. </p>
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: center;
+          padding: 8px;
+        }
+        table.center {
+          margin-left: auto; 
+          margin-right: auto;
+        }
+        </style>
+    
+    <table class="center">
+
+        <tr>      
+            <th scope="row" style="width:100px;">Ranking</th>      
+            <th>Puesto y contrato</th>
+            <th style="width:200px;">Probabilidad Contrato A</th>
+        </tr>      
+        <tr>
+          <th style="width:100px;">
+            {% if contract_A %}
+                {% if position_contract == 1 %}
+                    1
+                {% else %}
+                    2
+                {% endif %} 
+            {% else %}
+                {% if position_contract == 1 %}
+                    3
+                {% else %}
+                    4
+                {% endif %} 
+            {% endif %}
+          </th>       
+            <td>
+            {% if contract_A %}
+                {% if position_contract == 1 %}
+                    Primer puesto de los participantes con <i>Contrato A
+                {% else %}
+                    Segundo puesto de los participantes con <i>Contrato A
+                {% endif %} 
+            {% else %}
+                {% if position_contract == 1 %}
+                    Primer puesto de los participantes con <i>Contrato B</i>
+                {% else %}
+                    Segundo puesto de los participantes con <i>Contrato B</i>
+                {% endif %} 
+            {% endif %}  
+            </td>    
+            <td style="width:200px;">
+                {% if discrimination == 0 %}
+                    {{likelihood_contract_A}}
+                {% else %} 
+                    {% if contract_A == 1 and position_contract == 1 or contract_A == 0 and position_contract == 2%}
+                        {{likelihood_contract_A}}                   
+                    {% else %}
+                        Repechaje
+                    {% endif %} 
+                {% endif %} 
+            </td>                 
+        </tr>       
+      </table>
+    
+      <!--Repechaje -->
+      {% if discrimination != 0 %}
+        {% if contract_A == 1 and position_contract == 2 or contract_A == 0 and position_contract == 1 %}
+        <h6> Repechaje </h6>
+        Los participantes en el Ranking <b>2</b> y <b>3</b> pueden cambiar de contrato dependiendo del número de secuencias correctas que hayan realizado
+        
+        <table class="center">
+            <tr>      
+                <th scope="row" style="width:100px;">Ranking</th>      
+                <th>Secuencias correctas</th>
+                <th style="width:200px;">Probabilidad Contrato A</th>
+            </tr>
+
+            <tr>
+                <td style="width:100px;">
+                    <b>
+                    {% if contract_A %}
+                        2 
+                    {% else %}
+                        3
+                    {% endif %}
+                    </b>(usted)
+                </td>       
+                <td>
+                    {{tasks}} 
+                </td>
+                <td style="width:200px;">
+                    {{likelihood_contract_A}}  
+                </td>                  
+            </tr>
+            <tr>
+                <td style="width:100px;">
+                    <b>{% if contract_A %}
+                        3 
+                    {% else %}
+                        2
+                    {% endif %}
+                    </b>(el otro)
+                </td>       
+                <td>
+                    {{tasks_other}}
+                </td>
+                <td style="width:200px;">
+                    {{likelihood_contract_A_other}}  
+                </td>                  
+            </tr>
+            </table>
+            {% endif %} 
         {% endif %} 
-    {% endif %} 
-    </b>
-    {% if round < 5 %}
-    	<p> La probabilidad de que se le asigne un Contrato A para la siguiente ronda es: <b>{{likelihood_contract_A}}</b> </p>
+    <p>Haga clic en "Siguiente" para conocer su contrato para la ronda {{round_next}}.</p>
     {% endif %} 
     {% next_button %}
 {% endblock %}

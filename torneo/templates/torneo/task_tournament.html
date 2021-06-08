@@ -130,19 +130,23 @@ margin-left: 47%;
 {% endblock %}
 
 {% block content %}
-<p> Se le ha asignado un <b>Contrato
-{% if contract_A %}
-    A
-{% else %}
-    B 
-{% endif %} 
-</b>:  recibe <b>
-{% if contract_A %}
-    {{payoff_A}}
-{% else %}
-    {{payoff_B}}
-{% endif %} 
-</b> por tarea correcta. </p>
+<p> Se le ha asignado un 
+    <i>Contrato
+        {% if contract_A %}
+            A
+        {% else %}
+            B 
+        {% endif %} 
+    </i>
+    , recibe 
+    <b>
+    {% if contract_A %}
+        {{payoff_A}}
+    {% else %}
+        {{payoff_B}}
+    {% endif %} 
+    </b> 
+por <i>secuencia</i> correcta. </p>
 
 <input type="hidden" name="tasks" id="tasks" value="" />
 <input type="hidden" name="mistakes" id="mistakes" value="" />

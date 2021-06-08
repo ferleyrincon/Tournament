@@ -108,13 +108,19 @@ class results_tournament(Page):
         return self.round_number > 1
     def vars_for_template(self):
         return {
+            "discrimination" : self.session.config["discrimination"],
+            "num_rounds" : Constants.num_rounds,
+            "tasks_other":self.group.tasks_tournament - self.player.tasks,
             "round": self.round_number - 1, #Restar 1 al número de rondas. Ronda 0 = Práctica
+            "round_next": self.round_number,
             "tasks" : self.player.tasks,
             "payoff_round": "$"+format(int(str(self.player.payoff_round).split(",")[0]),',d'),
             "position_group": self.player.position_group,
             "contract_A": self.player.contract_A,
             "position_contract": self.player.position_contract,
-            "likelihood_contract_A": "{0:.0f}%".format(self.player.likelihood_contract_A*100)
+            "likelihood_contract_A_number": self.player.likelihood_contract_A,
+            "likelihood_contract_A": "{0:.0f}%".format(self.player.likelihood_contract_A*100),
+            "likelihood_contract_A_other": "{0:.0f}%".format(100-self.player.likelihood_contract_A*100)
         }
 
 class allocation(Page):
@@ -136,7 +142,7 @@ class questions(Page):
     def is_displayed(self):
         return self.round_number == Constants.num_rounds
     form_model = 'player'
-    form_fields = ['p1', 'p2', 'p3','p4', 'p5', 'p6','p7'] 
+    form_fields = ['p_risk','p1', 'p2', 'p3','p4', 'p5', 'p6','p7'] 
 
 class wait_payoff_total(WaitPage):
     wait_for_all_groups = True

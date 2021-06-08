@@ -157,6 +157,7 @@ class Group(BaseGroup):
     rankA = models.StringField()
     rankB = models.StringField()
     winner_contract_A = models.IntegerField(initial=0)
+    tasks_tournament = models.IntegerField(initial=0)
 
     def get_tasks_tournament(self):
         rankA = json.loads(self.rankA)
@@ -239,7 +240,7 @@ class Player(BasePlayer):
     tasks = models.IntegerField(initial=0)
     consent = models.BooleanField(blank=True)
     consent_account = models.BooleanField(blank=True)
-    identificador = models.StringField(label='Para iniciar por favor ingrese las iniciales de su primer nombre y apellido seguido de su fecha de nacimiento. Por ejemplo, si usted se llama Lina Ríos y usted nació el 11 de febrero de 1995, debe ingresar LR11021995. Escriba todo en mayúscula. Esta etiqueta es importante para asegurar su participación en el resto de la actividad y la realización de los pagos.')
+    identificador = models.StringField(label='Para iniciar por favor ingrese las iniciales de su primer nombre y apellido seguido de su fecha de nacimiento. Por ejemplo, si usted se llama Lina Ríos y usted nació el 11 de febrero de 1995, debe ingresar LR11021995. Escriba todo en mayúscula. Este código es importante para asegurar su participación en el resto de la actividad y la realización de los pagos.')
     
     p1 = models.IntegerField(
     choices=[
@@ -284,6 +285,20 @@ class Player(BasePlayer):
         [4,'Entre $ 2.000.000 - $ 4.000.000'],
         [5,'Mayor a $ 4.000.000'],
     ], label="¿Cuál es el rango de su ingreso mensual?")
+    p_risk = models.IntegerField(widget=widgets.RadioSelectHorizontal, 
+                                 label="", 
+                                 choices=[  [0, "0"],
+                                            [1, "1"],
+                                            [2, "2"],
+                                            [3, "3"],
+                                            [4, "4"],
+                                            [5, "5"],
+                                            [6, "6"],
+                                            [7, "7"],
+                                            [8, "8"],
+                                            [9, "9"],
+                                            [10, "10"]])
+
 
     #Esta función define el pago final
     def set_payoff(self):
