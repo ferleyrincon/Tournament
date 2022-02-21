@@ -6,14 +6,17 @@
 {% endblock %}
 
 {% block content %}
-	<p> En la ronda {{round}} del Torneo ronda usted tendrá un <b><i>Contrato
+	<p> En la ronda {{round}} del Torneo usted tendrá un <b><i>Contrato
 	{% if contract_A_tournament %}
         A. <br>
-        </i></b>Recibirá $2.000 por cada <i>secuencia</i> correcta que haga.
+        </i></b>Recibirá $3.000 por cada <i>secuencia</i> correcta que haga.
     {% else %}
         B. <br>
-        </i></b>Recibirá $1.000 por cada <i>secuencia</i> correcta que haga.
+        </i></b>Recibirá $1.500 por cada <i>secuencia</i> correcta que haga.
     {% endif %} 
+    </p>
+    <p>
+        <b>Nota</b>: recuerde que los otros tres (3) miembros de su grupo cambian ronda tras ronda.
     </p>
     {% next_button %}
 

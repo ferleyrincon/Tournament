@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %} {% load otree static %} 
+{% load user_agents %}
+
+{% block content %}
+
+
+{% if request|is_mobile or request|is_tablet %}
+<h1>Lo sentimos!</h1>
+La participación en este estudio NO está permitida en dispositivos móviles o tabletas.
+
+{% else %}
+<h1>Bienvenido</h1>
+
+<p> Bienvenido a esta actividad en la que tendrá que traducir una serie de letras a una secuencia de números. A este ejercicio le llamaremos una tarea. Por su participación recibirá unas ganancias que dependerán del azar
+    y de la cantidad de tareas que usted y otros participantes realicen. </p> 
+
+
+<p> Silencie su teléfono móvil y evite cualquier elemento distractor que pueda interrumpirlo en los siguientes 30 minutos. </p>
+
+<p> La actividad tendrá seis (6) rondas dividas en dos (2) Etapas: </p>
+
+<p> Etapa 1 – Ronda de Práctica (Ronda 0): Tendrá 90 segundos para familiarizarse con la tarea de pasar números a letras Debe tomarla en serio y realizar correctamente el mayor número de tareas posibles. </p>
+
+<p> Etapa 2 – Torneo (Rondas 1 a 5): Por cada tarea completa usted recibirá una suma de dinero, que dependerá de si usted tiene un Contrato A o a un Contrato B. Las tareas son iguales en ambos contratos, pero pagan de forma diferente. El Contrato A pagará el doble por tarea, respecto al Contrato B. </p>
+
+<p> ¿Por qué le llamamos torneo? Al final de las rondas 1 a 4, los participantes podrán ser reasignados entre los Contratos A y B según su rendimiento. Es decir, participantes que comiencen con el Contrato A pueden ser relegados al Contrato B, y participantes que comiencen con el Contrato B pueden ser promovidos al Contrato A. Al inicio de la Etapa 2 se explicará en detalle los cambios de contrato. </p>
+
+<p> Al final de la actividad se escogerá al azar una ronda del torneo (rondas 1 a 5) para calcular sus ganancias de la actividad. El pago dependerá de cuántas tareas realizó, y del tipo de contrato,  en la ronda seleccionada. </p>
+
+<p> Por favor, levante la mano si tiene preguntas. Uno de los monitores se comunicará con usted y le ayudará individualmente. Su participación en el experimento es anónima. Esto quiere decir que su identidad y sus ganancias no le serán reveladas a los demás, ni tampoco la identidad ni ganancias de los demás le serán reveladas a usted. </p>
+
+{% next_button %} 
+{% endif %}
+{% endblock %}

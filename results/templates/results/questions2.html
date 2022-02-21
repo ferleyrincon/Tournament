@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Encuesta
+{% endblock %}
+
+{% block content %}
+
+<p>1. En una escala del 0 al 10, donde: <br>
+   <b>0</b> - significa que <i>"no esta dispuesto(a) a tomar riesgos en lo absoluto"</i> y <br>
+   <b>10</b> - significa que <i>"esta muy dispuesto(a) a tomar riesgos"</i> <br>
+   Por favor, díga, en general ¿Qué tan dispuesto (a) está o no está usted a tomar riesgos? <br>
+   <small> Puede usar cualquier número entre 0 y 10 para indicar en qué lugar de la escala se encuentra, usando 0, 1, 2,
+      3, 4, 5, 6, 7, 8, 9 ó 10.
+   </small>
+</p>
+
+{% formfields %}
+
+
+{% next_button %}
+
+{% endblock %}

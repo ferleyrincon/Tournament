@@ -1,0 +1,20 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load user_agents %}
+
+{% block content %}
+
+
+{% if request|is_mobile or request|is_tablet %}
+<h1>Lo sentimos!</h1>
+La participación en este estudio NO está permitida en dispositivos móviles o tabletas.
+
+{% else %}
+<h1>Bienvenida</h1>
+<p> Muchas gracias por su interés en participar. En una parte de la actividad se formarán grupos, por eso comenzaremos cuando todos los participantes esten conectados adecuadamente.</p>
+<p> Por favor asegure su conexión a internet, encienda su cámara, silencie su teléfono móvil y evite cualquier distracción durante la actividad.</p>
+<p> Haga <I>clic</I> en "Siguiente" para ingresar.</p>
+
+{% endif %}
+{% next_button %} 
+{% endblock %}

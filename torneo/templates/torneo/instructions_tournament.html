@@ -15,14 +15,14 @@
         
     <p> 
         En cada ronda hará parte de un grupo de cuatro (4) personas: dos (2) tendrán un <i>Contrato A</i> y dos (2) un <i>Contrato B</i>.<br>
-        Los otros tres (3) miembros de su grupo irán cambiando ronda tras ronda, pero siempre habrá dos personas con el <i>Contrato A</i> y dos con el <i>Contrato B</i>. 
+        <b>Los otros tres (3) miembros de su grupo irán cambiando ronda tras ronda. Siempre habrá dos personas con el <i>Contrato A</i> y dos con el <i>Contrato B</i> en cada grupo</b>. 
     </p> 
 
-    <p> En cada ronda tendrá 90 segundos para realizar el mayor número de <i>secuencias</i> que pueda. El pago por cada <i>secuencia</i> correcta dependerá del contrato al que fue asignado en la ronda anterior: </p>
+    <p> En cada ronda tendrá 120 segundos para realizar el mayor número de <i>secuencias</i> que pueda. El pago por cada <i>secuencia</i> correcta dependerá del contrato al que fue asignado en la ronda anterior: </p>
     
     <ul>
-        <li> <i>Contrato A</i>: recibe $2.000 por <i>secuencia</i> correcta. </li>
-        <li> <i>Contrato B</i>: recibe $1.000 por <i>secuencia</i> correcta. </li>
+        <li> <i>Contrato A</i>: recibe $3.000 por <i>secuencia</i> correcta. </li>
+        <li> <i>Contrato B</i>: recibe $1.500 por <i>secuencia</i> correcta. </li>
     </ul>
 
     <h5> Ranking y probabilidad de tener un Contrato A en la siguiente ronda</h5>
@@ -81,7 +81,7 @@
                 {% if discrimination == 0 %}
                     50%
                 {% else %}
-                    Repechaje
+                    Reclasificación
                 {% endif %} 
             </td>                  
         </tr>
@@ -92,7 +92,7 @@
                 {% if discrimination == 0 %}
                     50%
                 {% else %}
-                    Repechaje
+                    Reclasificación
                 {% endif %}
             </td>                  
         </tr>
@@ -114,25 +114,26 @@
     
     <p> Según la tercera columna de la tabla, 
         {% if discrimination == 0 %}
-            la probabilidad de cambiar de contrato es la misma para todos los participantes. <br>
-            Es igual de probable que reciba el <i>Contrato A</i> o el <i>Contrato B</i>. 
+            <b>la probabilidad de cambiar de contrato es la misma para todos los participantes.</b><br>
+            Es decir, es igual de probable que reciba el <i>Contrato A</i> o el <i>Contrato B</i>. 
       
         {% else %}
         <ul>
             <li> El participante en el Ranking <b>1</b> mantiene el <i>Contrato A</i>, y el participante en el Ranking <b>4</b> mantiene el <i>Contrato B</i>.</li>
-            <li> Los participantes en el Ranking <b>2</b> y <b>3</b> pueden cambiar de contrato en un <i>Repechaje.</i> </li>
+            <li> Los participantes en el Ranking <b>2</b> y <b>3</b> pueden cambiar de contrato en la <i>Reclasificación.</i> </li>
         </ul>
         </p> 
                
-            <h6> ¿En qué consiste el Repechaje? </h6>
+            <h5> ¿En qué consiste la Reclasificación? </h5>
 
                 <p>La asignación del <i>Contrato A</i> depende del número de secuencias correctas que hayan realizado los participantes en el Ranking <b>2</b> y <b>3</b>. <br>
                                     
                     {% if discrimination == 1 %}
-                        Se queda con el <i>Contrato A</i> el que haya completado más <i>secuencias</i> entre los participantes en repechaje.
+                        <b>Se queda con el <i>Contrato A</i> el que haya completado más <i>secuencias</i> entre los participantes en la Reclasificación.</b> <br> 
+                        Si ambos hacen la misma cantidad de secuencias correctas, la probabilidad quedarse con el <i>Contrato A</i> es la misma para ambos los participantes (50%).
                     {% else %}
                         Quedarse con el <i>Contrato A</i> depende de un sorteo. 
-                        Entre más secuencias correctas respecto a las del otro participante en el repechaje, más chances de ganar.
+                        <b>Entre más secuencias correctas respecto a las del otro participante en la Reclasificación, más chances de ganar.</b><br>
                         Si ambos hacen la misma cantidad de secuencias correctas, la probabilidad quedarse con el <i>Contrato A</i> es la misma para ambos los participantes (50%). <br>
 
                         Así se ve la fórmula exacta: $$\text{Probabilidad Contrato A}  = {\text{Sus tareas }  \over \text{Sus tareas }  + \text{Tareas del otro} }.$$

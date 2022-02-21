@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Muchas gracias por participar.
+{% endblock %}
+
+{% block content %}
+
+<p><b>Por favor lea cuidadosamente la información en esta página 
+    y siga correctamente las instrucciones al final de la misma.</b></p>
+   <p> La ronda elegida al azar para calcular sus ganancias del torneo es: Ronda {{round_payoff}} </p>
+   <p> Usted ganó {{payoff_total}} en esa ronda. 
+       Por tanto, usted ganó en total {{payoff_complete}} (incluyendo los $10,000 por completar la actividad).  </p>
+<p>Tenga en cuenta que, sus ganancias se transferirán de forma electrónica 
+    en un lapso de 48 horas hábiles a partir del momento en que diligencie correctamente el formulario de pago.</p>
+
+
+<p><b>Instrucciones formulario de pago</b></p>
+<p> <b>1.</b>. Copie (Ctrl + C) el siguiente código:</p>
+
+<h3 class="text-center text-danger mx-auto d-block w-25 border border-4">{{ identificador }}</h3><br>
+
+<p><b>2.</b> Haga <i>clic</i> sobre el vínculo mostrado debajo para acceder al "Formulario de Pagos". Una vez allí, pegue el código en la pregunta que lo solicita y termine de diligenciar el formulario. </p>
+
+<p><a role="button" href="https://encuestas.urosario.edu.co/index.php/846598"  target="_blank" class="btn btn-info mx-auto d-block w-25">Formulario de Pagos</a></p>
+
+<p>Gracias</p>
+
+
+{% endblock %}

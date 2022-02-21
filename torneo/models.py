@@ -23,13 +23,13 @@ Mobility and productivity in a Dual Labor Market: a lab experiment.
 class Constants(BaseConstants):
     name_in_url = 'Torneo'
     players_per_group = 4
-    num_rounds = 3
-    payoff_A = c(2000)
-    payoff_B = c(1000)
+    num_rounds = 6
+    payoff_A = c(3000)
+    payoff_B = c(1500)
     round_payoff = random.randint(2, num_rounds)
     letters_per_word = 5
     use_timeout = True
-    seconds_per_period = 90
+    seconds_per_period = 120
 
 class Subsession(BaseSubsession):
     merit = models.BooleanField(
@@ -90,41 +90,42 @@ class Subsession(BaseSubsession):
         rank = dict(sorted(rank.items(), key=lambda x: x[1], reverse=True))
         return rank
 
-    """Este método retorna la posición del jugador en el ranking grupal"""
+    """Ronda 0: Este método retorna la posición del jugador en el ranking grupal"""
     def set_ranking(self):
-        players = self.get_players()
-        rank = {}
-        for k, j in enumerate(players):
-            rank['j' + str(k)] = j.tasks
-        if (self.merit and self.round_number==1) or (self.discrimination > 0 and 
-            self.round_number!=1):
-            rank = self.sort(rank)
-        else: 
-            l = list(rank.items())
-            random.shuffle(l)
-            rank = dict(l)
-        for j, i in enumerate(rank.keys()):
-            jugador = players[int(i.split('j')[1])]
-            # Half of the players are contract A (Primera mitad de los players es contrato A)
-            if j < len(players)//2:
-                jugador.contract_A_tournament = True
-                # Players in the 1st quarter are in position Contract A1 (Primeta mitad de la mitad, primer cuarto, son posicion 1 contrato A)
-                if j < len(players)//4:
-                    jugador.position_contract_tournament = 1
-                # The other 2nd quarter are in position Contract A2  (La otra mitad seria posicion 2 contrato A)
+        if (self.round_number == 1):
+            players = self.get_players()
+            rank = {}
+            for k, j in enumerate(players):
+                rank['j' + str(k)] = j.tasks
+            if (self.merit and self.round_number==1) or (self.discrimination > 0 and 
+                self.round_number!=1):
+                rank = self.sort(rank)
+            else: 
+                l = list(rank.items())
+                random.shuffle(l)
+                rank = dict(l)
+            for j, i in enumerate(rank.keys()):
+                jugador = players[int(i.split('j')[1])]
+                # Half of the players are contract A (Primera mitad de los players es contrato A)
+                if j < len(players)//2:
+                    jugador.contract_A_tournament = True
+                    # Players in the 1st quarter are in position Contract A1 (Primeta mitad de la mitad, primer cuarto, son posicion 1 contrato A)
+                    if j < len(players)//4:
+                        jugador.position_contract_tournament = 1
+                    # The other 2nd quarter are in position Contract A2  (La otra mitad seria posicion 2 contrato A)
+                    else:
+                        jugador.position_contract_tournament = 2
+                # Half of the players are contract A (La otra mitad son contato B)
                 else:
-                    jugador.position_contract_tournament = 2
-            # Half of the players are contract A (La otra mitad son contato B)
-            else:
-                jugador.contract_A_tournament= False
-                # Players in the 3rd quarter are in position Contract B1 (La primera mitad de la mitad de B, osea 3/4, son posicion 1)
-                if j < 3*len(players)//4:
-                    jugador.position_contract_tournament = 1
-                else:
-                    jugador.position_contract_tournament = 2
-            if(self.round_number==1):
-                jugador.contract_A = jugador.contract_A_tournament
-    
+                    jugador.contract_A_tournament= False
+                    # Players in the 3rd quarter are in position Contract B1 (La primera mitad de la mitad de B, osea 3/4, son posicion 1)
+                    if j < 3*len(players)//4:
+                        jugador.position_contract_tournament = 1
+                    else:
+                        jugador.position_contract_tournament = 2
+                if(self.round_number==1):
+                    jugador.contract_A = jugador.contract_A_tournament
+        
     def set_ranking_groups(self):
         for g in self.get_groups():
             g.set_ranking()
@@ -136,6 +137,19 @@ class Subsession(BaseSubsession):
             j.set_position_group()
             j.set_position_contract()
             j.set_likelihood_contract_A()
+    
+    def set_winners_contract_A(self):
+        for g in self.get_groups():
+            g.set_winner_contract_A()
+            g.set_likelihood_contract_A_p2()
+    
+    def set_tasks(self):
+        if (self.round_number!=1):
+            for g in self.get_groups():
+                g.set_tasks_p1()
+                g.set_tasks_p2()
+                g.set_tasks_p3()
+                g.set_tasks_p4()
 
     def set_payoff_players(self):
         for j in self.get_players():
@@ -157,24 +171,65 @@ class Group(BaseGroup):
     rankA = models.StringField()
     rankB = models.StringField()
     winner_contract_A = models.IntegerField(initial=0)
+    tasks_p1= models.IntegerField(initial=0)
+    tasks_p2= models.IntegerField(initial=0)
+    tasks_p3= models.IntegerField(initial=0)
+    tasks_p4= models.IntegerField(initial=0)
     tasks_tournament = models.IntegerField(initial=0)
+    likelihood_contract_A_p2= models.FloatField()
+
+    def set_tasks_p1(self):
+        rankA = json.loads(self.rankA)
+        self.tasks_p1 = list(rankA.values())[0] 
+    
+    def set_tasks_p2(self):
+        rankA = json.loads(self.rankA)
+        self.tasks_p2 = list(rankA.values())[1]
+
+    def set_tasks_p3(self):
+        rankB = json.loads(self.rankB)
+        self.tasks_p3 = list(rankB.values())[0]
+    
+    def set_tasks_p4(self):
+        rankB = json.loads(self.rankB)
+        self.tasks_p4 = list(rankB.values())[1]
 
     def get_tasks_tournament(self):
         rankA = json.loads(self.rankA)
-        rankB = json.loads(self.rankB) 
+        rankB = json.loads(self.rankB)
         p2 = list(rankA.values())[1]  # tasks player in position A2 (palabras del jugador en la posicion 2 del ranking A)
         p3 = list(rankB.values())[0]  # tasks player in position B1 (palabras del jugador en la posicion 1 del ranking B)
         tasks_tournament = p2 + p3
+        self.tasks_tournament = tasks_tournament
         return tasks_tournament
 
+    def set_likelihood_contract_A_p2(self):
+        if (self.round_number!=1):
+            if self.subsession.discrimination == 0:#(random)
+                self.likelihood_contract_A_p2 = 0.5
+            else: 
+                if self.subsession.discrimination == 1:#(perfect)
+                    if (self.tasks_p2 > self.get_tasks_tournament()/2):
+                        self.likelihood_contract_A_p2  = 1
+                    elif (self.tasks_p2 == self.get_tasks_tournament()/2):
+                        self.likelihood_contract_A_p2  = 0.5
+                    else:
+                        self.likelihood_contract_A_p2  = 0
+                else: #subsession.discrimination == 2 (noisy)
+                    if self.get_tasks_tournament() == 0:
+                        self.likelihood_contract_A_p2 = 0.5
+                    else:
+                        self.likelihood_contract_A_p2 = self.tasks_p2 / self.get_tasks_tournament()
+
     def set_winner_contract_A(self):
-        rankA = json.loads(self.rankA)
-        rankB = json.loads(self.rankB)
-        p2 = self.get_player_by_id(int(list(rankA.keys())[1].split('j')[1]))
-        p3 = self.get_player_by_id(int(list(rankB.keys())[0].split('j')[1]))
-        p_choise = [str(list(rankA.keys())[1]).split('j')[1], str(list(rankB.keys())[0]).split('j')[1]]
-        self.winner_contract_A = int(random.choices(p_choise, weights=[p2.likelihood_contract_A, p3.likelihood_contract_A], k = 1)[0])
-        return self.winner_contract_A
+        if (self.round_number!=1):
+            rankA = json.loads(self.rankA)
+            rankB = json.loads(self.rankB)
+            p2 = self.get_player_by_id(int(list(rankA.keys())[1].split('j')[1]))
+            p3 = self.get_player_by_id(int(list(rankB.keys())[0].split('j')[1]))
+            p_choise = [str(list(rankA.keys())[1]).split('j')[1], str(list(rankB.keys())[0]).split('j')[1]]
+            self.winner_contract_A = int(random.choices(p_choise, weights=[p2.likelihood_contract_A, p3.likelihood_contract_A], k = 1)[0])
+            return self.winner_contract_A
         
     def sort(self, rank):
         l = list(rank.items())
@@ -213,7 +268,6 @@ class Group(BaseGroup):
                         jugador.position_contract_tournament = 1
                     else:
                         jugador.position_contract_tournament = 2   
-    
 
     def set_ranking_contract(self):
         rankA = {}
@@ -231,6 +285,7 @@ class Player(BasePlayer):
     likelihood_contract_A = models.FloatField()
     contract_A_tournament = models.BooleanField()
     position_group = models.IntegerField() #De 1-4
+    position_ranking= models.IntegerField()
     position_contract = models.IntegerField() #De 1-2
     position_contract_tournament = models.IntegerField() #De 1-2
     payoff_round = models.CurrencyField()
@@ -241,64 +296,54 @@ class Player(BasePlayer):
     consent = models.BooleanField(blank=True)
     consent_account = models.BooleanField(blank=True)
     identificador = models.StringField(label='Para iniciar por favor ingrese las iniciales de su primer nombre y apellido seguido de su fecha de nacimiento. Por ejemplo, si usted se llama Lina Ríos y usted nació el 11 de febrero de 1995, debe ingresar LR11021995. Escriba todo en mayúscula. Este código es importante para asegurar su participación en el resto de la actividad y la realización de los pagos.')
-    
-    p1 = models.IntegerField(
-    choices=[
-        [1, 'Hombre'],
-        [2, 'Mujer'],
-        [3, 'Otro'],
-    ], label="¿Con qué género se identifica?")
-    p2 = models.IntegerField(label="Edad")
-    p3 = models.IntegerField(
-    choices=[
-        [1,'Estudiante'],
-        [2,'Desempleado'],
-        [3,'Empleado a jornada completa'],
-        [4,'Empleado a tiempo parcial'],
-        [5,'Trabajador independiente'],
-        [6,'Trabajador no remunerado (por ejemplo: ama de casa, empresa familiar)'],
-        [7,'Retirado/pensionado'],
-        [8,'Otro'],
-        [9,'No sabe']
-    ], label="¿Cuál es su situación laboral actual?")
-    p4 = models.IntegerField(
-    choices=[
-        [1,'Ninguno'],
-        [2,'Primaria incompleta'],
-        [3,'Primaria'],
-        [4,'Bachillerato'],
-        [5,'Técnico o Tecnólogo'],
-        [6,'Pregrado'],
-        [7,'Posgrado (Especialización, Maestría, Doctorado)']
-    ], label="¿Cuál es el nivel educativo más alto que ha completado?")
-    p5 = models.StringField(label="Escriba el nombre de su profesión/ocupación")
-    p6 = models.IntegerField(
-    choices=[
-        [1,'Subsidiado'],
-        [2,'Contributivo (incluye regímenes especiales)']
-    ], label="A qué régimen de seguridad social en salud pertenece")
-    p7 = models.IntegerField(
-    choices=[
-        [1,'Menos del Salario Mínimo Mensual (SMMLV)'],
-        [2,'Entre 1 SMMLV - $ 1.500.000'],
-        [3,'Entre $ 1.500.000 - $ 2.000.000'],
-        [4,'Entre $ 2.000.000 - $ 4.000.000'],
-        [5,'Mayor a $ 4.000.000'],
-    ], label="¿Cuál es el rango de su ingreso mensual?")
-    p_risk = models.IntegerField(widget=widgets.RadioSelectHorizontal, 
-                                 label="", 
+    p_random1 = models.IntegerField(blank=9, widget=widgets.RadioSelectHorizontal, 
+                                 label="1. Usted hace 6 secuencias, y los otros participantes hacen 4 secuencias cada uno. Su probabilidad de tener el Contrato A en la siguiente ronda es:", 
+                                 choices=[  [0, "0%"],
+                                            [0, "30%"],
+                                            [1, "50%"],
+                                            [0, "60%"],
+                                            [0, "90%"],
+                                            [0, "100%"]])
+    p_random2 = models.IntegerField(blank=9,widget=widgets.RadioSelectHorizontal, 
+                                 label="2. Usted hace 6 secuencias, y los otros participantes también hacen 6 secuencias cada uno. Su probabilidad de tener el Contrato A en la siguiente ronda es:", 
                                  choices=[  [0, "0"],
-                                            [1, "1"],
-                                            [2, "2"],
-                                            [3, "3"],
-                                            [4, "4"],
-                                            [5, "5"],
-                                            [6, "6"],
-                                            [7, "7"],
-                                            [8, "8"],
-                                            [9, "9"],
-                                            [10, "10"]])
-
+                                            [0, "30%"],
+                                            [1, "50%"],
+                                            [0, "60%"],
+                                            [0, "90%"],
+                                            [0, "100%"]])
+    p_perfect1 = models.IntegerField(blank=9,widget=widgets.RadioSelectHorizontal, 
+                                 label="1. Usted hace 6 secuencias, y el otro participante hace 4 secuencias. Su probabilidad de tener el Contrato A en la siguiente ronda es:", 
+                                 choices=[  [0, "0%"],
+                                            [0, "30%"],
+                                            [0, "50%"],
+                                            [0, "60%"],
+                                            [0, "90%"],
+                                            [1, "100%"]])
+    p_perfect2 = models.IntegerField(blank=9,widget=widgets.RadioSelectHorizontal, 
+                                 label="2. Usted hace 6 secuencias, y el otro participante también hace 6 secuencias. Su probabilidad de tener el Contrato A la siguiente ronda es:", 
+                                 choices=[  [0, "0%"],
+                                            [0, "30%"],
+                                            [1, "50%"],
+                                            [0, "60%"],
+                                            [0, "90%"],
+                                            [0, "100%"]])
+    p_noisy1= models.IntegerField(blank=9,widget=widgets.RadioSelectHorizontal, 
+                                 label="1. Usted hace 6 secuencias, y el otro participante hace 4 secuencias. Su probabilidad de tener el Contrato A en la siguiente ronda es:", 
+                                 choices=[  [0, "0%"],
+                                            [0, "30%"],
+                                            [0, "50%"],
+                                            [1, "60%"],
+                                            [0, "90%"],
+                                            [0, "100%"]])
+    p_noisy2= models.IntegerField(blank=9,widget=widgets.RadioSelectHorizontal, 
+                                 label="2. Usted hace 6 secuencias, y el otro participante también hace 6 secuencias. Su probabilidad de tener el Contrato A en la siguiente ronda es:", 
+                                 choices=[  [0, "0%"],
+                                            [0, "30%"],
+                                            [1, "50%"],
+                                            [0, "60%"],
+                                            [0, "90%"],
+                                            [0, "100%"]])
 
     #Esta función define el pago final
     def set_payoff(self):
@@ -308,46 +353,52 @@ class Player(BasePlayer):
             for j in self.in_all_rounds():
                 payoff_rounds.append(j.payoff_round)
             self.pago= payoff_rounds[ronda- 1]
+            self.participant.vars['identificador'] = self.in_round(1).identificador
+            self.participant.vars['payoff_total'] = self.pago
+            self.participant.vars['round_payoff'] = self.subsession.round_payoff
         else:
             self.pago= 0
  #           j.pago = j.pago_ronda.in_all_rounds()[ronda - 1]
         
     def set_likelihood_contract_A(self):
-        if self.subsession.discrimination == 0:
-            self.likelihood_contract_A = 0.5
-        else:     
-            if (self.contract_A == True and self.position_contract == 1):
-                    self.likelihood_contract_A = 1
-            elif (self.contract_A == False and self.position_contract == 2):
-                    self.likelihood_contract_A = 0
-            else:
-                if self.subsession.discrimination == 1:#(perfect)
-                    if (self.tasks > self.group.get_tasks_tournament()/2):
+        if (self.round_number!=1):
+            if self.subsession.discrimination == 0:
+                self.likelihood_contract_A = 0.5
+            else:                     
+                if (self.contract_A == True and self.position_contract == 1):
                         self.likelihood_contract_A = 1
-                    elif (self.tasks == self.group.get_tasks_tournament()/2):
-                        self.likelihood_contract_A = 0.5
-                    else:
+                elif (self.contract_A == False and self.position_contract == 2):
                         self.likelihood_contract_A = 0
-                else: #subsession.discrimination == 2 (noisy)
-                    if self.group.get_tasks_tournament() == 0:
-                        self.likelihood_contract_A = 0.5
-                    else:
-                        self.likelihood_contract_A = self.tasks / self.group.get_tasks_tournament()
+                else:
+                    if self.subsession.discrimination == 1:#(perfect)
+                        if (self.tasks > self.group.get_tasks_tournament()/2):
+                            self.likelihood_contract_A = 1
+                        elif (self.tasks == self.group.get_tasks_tournament()/2):
+                            self.likelihood_contract_A = 0.5
+                        else:
+                            self.likelihood_contract_A = 0
+                    else: #subsession.discrimination == 2 (noisy)
+                        if self.group.get_tasks_tournament() == 0:
+                            self.likelihood_contract_A = 0.5
+                        else:
+                            self.likelihood_contract_A = self.tasks / self.group.get_tasks_tournament()
 
     def set_position_group(self):
         rank = json.loads(self.group.rank)
         self.position_group = list(rank.keys()).index('j' + str(self.id_in_group)) + 1
-
+    
     def set_position_contract(self):
         rankA = json.loads(self.group.rankA)
         rankB = json.loads(self.group.rankB)
         if self.contract_A:
             self.position_contract = list(rankA).index('j' + str(self.id_in_group)) + 1
+            self.position_ranking = list(rankA).index('j' + str(self.id_in_group)) + 1
         else:
             self.position_contract = list(rankB).index('j' + str(self.id_in_group)) + 1
+            self.position_ranking = list(rankB).index('j' + str(self.id_in_group)) + 3
 
     def set_contract_A_tournament(self):
-            winner = self.group.set_winner_contract_A()
+            winner = self.group.winner_contract_A
             if (self.contract_A == True and self.position_contract == 1) or (self.contract_A == False and self.position_contract == 2):
                 self.contract_A_tournament = self.contract_A
                 if self.position_contract == 1:
@@ -362,7 +413,6 @@ class Player(BasePlayer):
                     self.contract_A_tournament = False
                     self.position_contract_tournament = 1
 
-
     def set_payoff_round(self):
         if (self.contract_A):
             self.payoff_round= Constants.payoff_A * self.tasks
@@ -371,5 +421,6 @@ class Player(BasePlayer):
 
     def set_payoff_complete(self):
         if (self.round_number==Constants.num_rounds):
-            self.payoff_complete = self.pago + 4000
-        return self.payoff_complete 
+            self.payoff_complete= self.pago + 10000
+            self.participant.vars['payoff_complete']= self.pago + 10000
+        return self.participant.vars['payoff_complete']

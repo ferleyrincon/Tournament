@@ -1,0 +1,13 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Ganancias
+{% endblock %}
+
+{% block content %}
+	<p> La ronda elegida al azar para ser pagada es: Ronda {{ronda_pagar}}. </p>
+	<p> Usted ganó {{pago_total}} en esta actividad </p>
+    {% next_button %}
+
+{% endblock %}

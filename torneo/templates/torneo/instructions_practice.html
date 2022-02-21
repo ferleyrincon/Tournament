@@ -6,9 +6,9 @@
 {% block content %}
 
 <p> 
-    Usted tendrá 90 segundos para probar la tarea que deberá realizar en las siguientes rondas. 
-    En las rondas del <i>Torneo</i> su desempeño podrá hacerlo cambiar de contrato.
-    Por esto es importante que trate de completar el mayor número de secuencias posibles. 
+    Usted tendrá 120 segundos para probar la tarea que deberá realizar en las siguientes rondas. 
+    En las rondas del <i>Torneo</i> su desempeño y la suerte puede que influyan en la asignación de su contrato.
+    Por esto es importante que practique y trate de completar el mayor número de secuencias que pueda. 
 </p> 
 
 </p>
@@ -20,10 +20,10 @@
 
     {% if merit %}
         <h6>Según su rendimiento en esta ronda de práctica</h6>
-        La mitad de los participantes que completen el mayor número de secuencias recibirán el <i>Contrato A</i> . La otra mitad recibirán el <i>Contrato B</i>.
+        La primera mitad de los participantes, quienes completaron el mayor número de secuencias, recibirán el <i>Contrato A</i> . Los participantes clasificados en la otra mitad recibirán el <i>Contrato B</i>.
     {% else %}
         <h6>Al azar</h6>
-        Es igual de probable que reciba el <i>Contrato A</i> o el <i>Contrato B</i>. Aproveche esta ronda de práctica para familiarizarse con la tarea e ir poniendo a prueba sus capacidades. 
+        Es decir, es igual de probable que reciba el <i>Contrato A</i> o el <i>Contrato B</i>. Aproveche esta ronda de práctica para familiarizarse con la tarea e ir poniendo a prueba sus capacidades. 
     {% endif %}
 </p>
 {% next_button %} 

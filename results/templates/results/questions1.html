@@ -1,0 +1,136 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Encuesta
+{% endblock %}
+
+{% block content %}
+<br/><span> Por favor indique qué tan de acuerdo o desacuerdo está con la siguiente afirmación. Seleccione un solo número de acuerdo con la siguiente escala: <br> (1) muy en desacuerdo, (2) en desacuerdo, (3) ni de acuerdo ni en desacuerdo, (4) De acuerdo, (5) muy de acuerdo. </span>
+    <br/>
+<table class="table">
+   <tr>
+     <td >En nuestra sociedad, tipicamente las personas con ingresos más altos se esfuerzan más que las personas con ingresos más bajos.</td>
+     <td class="d-flex">
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="p_emp" id="op1" value="1">
+             <label class="form-check-label" for="op1">1</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="p_emp" id="op2" value="2">
+             <label class="form-check-label" for="op2">2</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="p_emp" id="op3" value="3">
+             <label class="form-check-label" for="op3">3</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="p_emp" id="op4" value="4">
+             <label class="form-check-label" for="op4">4</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="p_emp" id="op5" value="5">
+             <label class="form-check-label" for="op5">5</label>
+         </div>
+     </td>
+   </tr>
+ </table>
+
+
+
+
+<br/><span> Por favor indique en qué medida le parece justo que los siguientes factores determinen los ingresos de una persona. <br> Seleccione un solo número de acuerdo con la siguiente escala: <br> (1) muy en desacuerdo, (2) en desacuerdo, (3) ni de acuerdo ni en desacuerdo, (4) De acuerdo, (5) muy de acuerdo. </span>
+    <br/>
+<table class="table">
+   <tr>
+     <td >Es justo que el talento determine los ingresos de una persona.</td>
+     <td class="d-flex">
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_1" id="op1" value="1">
+             <label class="form-check-label" for="op1">1</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_1" id="op2" value="2">
+             <label class="form-check-label" for="op2">2</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_1" id="op3" value="3">
+             <label class="form-check-label" for="op3">3</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_1" id="op4" value="4">
+             <label class="form-check-label" for="op4">4</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_1" id="op5" value="5">
+             <label class="form-check-label" for="op5">5</label>
+         </div>
+     </td>
+   </tr>
+   <tr>
+     <td >Es justo que la suerte determine los ingresos de una persona.</td>
+     <td class="d-flex">
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_2" id="op1" value="1">
+             <label class="form-check-label" for="op1">1</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_2" id="op2" value="2">
+             <label class="form-check-label" for="op2">2</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_2" id="op3" value="3">
+             <label class="form-check-label" for="op3">3</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_2" id="op4" value="4">
+             <label class="form-check-label" for="op4">4</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_2" id="op5" value="5">
+             <label class="form-check-label" for="op5">5</label>
+         </div>
+     </td>
+   </tr>
+   <tr>
+     <td >Es justo que el esfuerzo determine los ingresos de una persona.</td>
+     <td class="d-flex">
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_3" id="op1" value="1">
+             <label class="form-check-label" for="op1">1</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_3" id="op2" value="2">
+             <label class="form-check-label" for="op2">2</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_3" id="op3" value="3">
+             <label class="form-check-label" for="op3">3</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_3" id="op4" value="4">
+             <label class="form-check-label" for="op4">4</label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="pnorm_3" id="op5" value="5">
+             <label class="form-check-label" for="op5">5</label>
+         </div>
+     </td>
+   </tr>
+ </table>
+ <br/><span>¿Qué está haciendo usted actualmente para mantenerse económicamente en su vejez?</span>
+ <select class="form-select" aria-label="selectPension" name="p_pension">
+     <option selected>Seleccione</option>
+     <option value="1">Aportando en un fondo de pensiones obligatorias</option>
+     <option value="2">Aportando en un fondo de pensiones voluntarias (por ejemplo, BEPS)</option>
+     <option value="3">Ahorrando</option>
+     <option value="4">Haciendo inversiones</option>
+     <option value="5">Pagando un seguro por su cuenta</option>
+     <option value="6">Preparando a sus hijos para que puedan ayudarlo en su vejez</option>
+     <option value="7">Nada</option>
+ </select>
+ <p></p>
+
+{% next_button %}
+
+{% endblock %}

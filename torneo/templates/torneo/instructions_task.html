@@ -5,28 +5,33 @@
 {% block title %} Descripción de la tarea{% endblock %} 
 
 {% block content %}
-    <p>A continuación, usted va a ver una <i>secuencia</i> de cinco (5) <i>números</i> que debe pasar a <i>letras</i>.</p>
+    <p>A continuación, usted va a ver una secuencia de números que debe traducir a una serie de letras (Z, D, J, K, L). A cada <b>NÚMERO le corresponde una LETRA</b>, debe escribir esta letra como respuesta en cada casilla.</p>
+    <p>A cada traducción de 5 números en sus respectivas letras le llamaremos secuencia.</p>
+     
+    <p>Cada vez que complete una secuencia, haga <I>clic</I> en el botón “Enviar”.
+     
+    <p>Si la traducción tiene errores, el computador le pedirá que los corrija. Si la traducción no tiene errores, la secuencia quedará completa.</p>
+     
+    <p>Al terminar una secuencia cambiarán los NÚMEROS y las LETRAS asociadas. Es decir, cada traducción es diferente a la anterior. </p>
+     
+    <p> <b>¿Cómo hacer la traducción?</b> </p>
+    <p>Debajo puede ver la pantalla que observará durante la tarea de traducción</p>
 
-    <p>Sólo hay 5 letras en la traducción (Z, D, J, K, L), y serán las mismas en todas las traducciones. 
-        La siguiente imagen muestra la ubicación de esas cinco letras. Esto lo puede ver debajo y confirmar en su teclado.</p>
+    <p class="aligncenter" >
+        <img src = "{% static 'torneo/Pantalla.jpg' %}" width="1000px" title="Pantalla"/>
+        </p>  
+     
+    <p>En la parte de arriba encuentra una tabla con las claves para traducir a letras. </p>
+    <p>En la parte de abajo encuentra una tabla con 5 números y 5 casillas vacías. Usted debe escribir la LETRA que corresponde a cada NÚMERO.</p>
+    <p>Queremos recordarle que sólo hay cinco letras en la traducción, y serán las mismas en todas las rondas. La siguiente imagen muestra la ubicación de esas cinco letras. Esto lo puede ver debajo y confirmar en su teclado.</p>
+     
+    <p class="aligncenter" >
+        <img src = "{% static 'torneo/Teclado.jpeg' %}" width="500px" title="Teclado"/>
+        </p>  
+     
+    <p>Usted dispondrá de <span style="color: #ff0000;">120 segundos</span> para completar correctamente todas las secuencias que pueda. Esta vez resolverá la tarea a modo de prueba.</p>
+    <p><b>Por favor oprima "Siguiente" para comenzar. Una vez haga <I>clic</I> comenzará a correr el tiempo de prueba.</b></p>
     
-        <p class="aligncenter" >
-            <img  class="imagen" src = "{% static 'torneo/Teclado.jpeg' %}"/>
-            </p>    
-
-    <p>Como a cada <i>número</i> le corresponde una <i>letra</i>, debe escribir una <b><i>letra</i></b> como respuesta en cada casilla vacía.</p>
-
-    <p>Cada vez que complete una <i>secuencia</i>, haga <i>click</i> en “Enviar”. 
-        Si tiene errores, el computador le pedirá que los corrija. 
-        <b>Si no tiene errores, la <i>secuencia</i> quedará completa.</b></p>
-
-    <p> Cada vez que complete una <i>secuencia</i> cambiará la <i>letra</i> que corresponde a cada <i>número</i>. Cada <i>secuencia</i> es diferente a la anterior.</p>
-
-    <p> Usted dispondrá de 90 segundos para completar todas las <i>secuencias</i> que pueda.</p>
-
-
-
-<p> Por favor oprima “Siguiente”  para comenzar. Una vez haga <i>click</i> empezará a correr el tiempo.</p>
 
 {% next_button %}
 

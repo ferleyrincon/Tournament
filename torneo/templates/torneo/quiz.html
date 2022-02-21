@@ -1,0 +1,41 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Preguntas de control
+{% endblock %}
+
+{% block content %}
+Por favor, considere las siguientes situaciones y marque la opción correcta.  
+
+{% if discrimination != 0 %}
+   <br> Imagine que puede cambiar de contrato al participar en la <i>Reclasificación</i>.</p> 
+{% endif %}
+
+<p>
+{% if discrimination == 0 %}
+   {% formfield 'p_random1' %}
+{% else %}
+   {% if discrimination == 1 %}
+      {% formfield 'p_perfect1' %}
+   {% else %}
+      {% formfield 'p_noisy1' %}
+   {% endif %}
+{% endif %}
+</p>
+
+<p>
+   {% if discrimination == 0 %}
+      {% formfield 'p_random2' %}
+   {% else %}
+      {% if discrimination == 1 %}
+         {% formfield 'p_perfect2' %}
+      {% else %}
+         {% formfield 'p_noisy2' %}
+      {% endif %}
+   {% endif %}
+</p>
+
+{% next_button %}
+
+{% endblock %}

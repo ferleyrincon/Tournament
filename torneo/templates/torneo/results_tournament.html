@@ -2,136 +2,301 @@
 {% load otree static %}
 
 {% block title %}
-    Resultados: ronda {{round}} de 5
+Resultados: ronda {{round}} de {{num_rounds}}
 {% endblock %}
 
 {% block content %}
-    <p> Usted hizo {{tasks}} secuencias correctamente.<br>
-        Sus ganancias en esta ronda son {{payoff_round}}.</p>
+<p> Usted hizo {{tasks}} secuencias correctamente. Sus ganancias en esta ronda son {{payoff_round}}.
+<p>
+    {% if round < num_rounds %} Su posición en el ranking grupal es <b>
+        {% if contract_A %}
+        {% if position_contract == 1 %}
+        1
+        {% else %}
+        2
+        {% endif %}
+        {% else %}
+        {% if position_contract == 1 %}
+        3
+        {% else %}
+        4
+        {% endif %}
+        {% endif %}
+        </b>.
 
-    {% if round < num_rounds %}
-
-    <!--Ranking -->
-    <h5> Ranking y probabilidad de tener un Contrato A en la siguiente ronda</h5>
-    <style>
-        table {
-          border-collapse: collapse;
-          width: 80%;
-        }
-        
-        td, th {
-          border: 1px solid #dddddd;
-          text-align: center;
-          padding: 8px;
-        }
-        table.center {
-          margin-left: auto; 
-          margin-right: auto;
-        }
-        </style>
-    
-    <table class="center">
-
-        <tr>      
-            <th scope="row" style="width:100px;">Ranking</th>      
-            <th>Puesto y contrato</th>
-            <th style="width:200px;">Probabilidad Contrato A</th>
-        </tr>      
-        <tr>
-          <th style="width:100px;">
-            {% if contract_A %}
-                {% if position_contract == 1 %}
-                    1
-                {% else %}
-                    2
-                {% endif %} 
-            {% else %}
-                {% if position_contract == 1 %}
-                    3
-                {% else %}
-                    4
-                {% endif %} 
-            {% endif %}
-          </th>       
-            <td>
-            {% if contract_A %}
-                {% if position_contract == 1 %}
-                    Primer puesto de los participantes con <i>Contrato A
-                {% else %}
-                    Segundo puesto de los participantes con <i>Contrato A
-                {% endif %} 
-            {% else %}
-                {% if position_contract == 1 %}
-                    Primer puesto de los participantes con <i>Contrato B</i>
-                {% else %}
-                    Segundo puesto de los participantes con <i>Contrato B</i>
-                {% endif %} 
-            {% endif %}  
-            </td>    
-            <td style="width:200px;">
-                {% if discrimination == 0 %}
-                    {{likelihood_contract_A}}
-                {% else %} 
-                    {% if contract_A == 1 and position_contract == 1 or contract_A == 0 and position_contract == 2%}
-                        {{likelihood_contract_A}}                   
-                    {% else %}
-                        Repechaje
-                    {% endif %} 
-                {% endif %} 
-            </td>                 
-        </tr>       
-      </table>
-    
-      <!--Repechaje -->
-      {% if discrimination != 0 %}
+        {% if contract_A %}
+        {% if position_contract == 1 %}
+        Fue quien más tareas realizó entre las personas con Contrato A de su grupo en esta ronda.
+        {% else %}
+        Fue quien menos tareas realizó entre las personas con Contrato A de su grupo en esta ronda.
+        {% endif %}
+        {% else %}
+        {% if position_contract == 1 %}
+        Fue quien más tareas realizó entre las personas con Contrato B de su grupo en esta ronda.
+        {% else %}
+        Fue quien menos tareas realizó entre las personas con Contrato B de su grupo en esta ronda.
+        {% endif %}
+        {% endif %}
+        <br>
+        <!--Reclasificación -->
+        {% if discrimination > 0 %}
         {% if contract_A == 1 and position_contract == 2 or contract_A == 0 and position_contract == 1 %}
-        <h6> Repechaje </h6>
-        Los participantes en el Ranking <b>2</b> y <b>3</b> pueden cambiar de contrato dependiendo del número de secuencias correctas que hayan realizado
-        
-        <table class="center">
-            <tr>      
-                <th scope="row" style="width:100px;">Ranking</th>      
-                <th>Secuencias correctas</th>
-                <th style="width:200px;">Probabilidad Contrato A</th>
-            </tr>
+        En la <i>Reclasificación</i> usted podrá cambiar de contrato con el participante en el ranking <b>
+            {% if contract_A == 1 and position_contract == 2%}
+                3 </b> (Contrato B).
+            {% else %}
+                2 </b> (Contrato A).
+            {% endif %}
+        {% endif %}
+        {% endif %}
+</p>
+<!--Ranking -->
+<style>
+    .btn-load {
+        width: 150px;
+        height: 150px;
+        padding: 10px 16px;
+        border-radius: 100%;
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fcffcc;
+        outline: none !important;
+        margin-left: 100px;
+        /* animation: loading*/
+    }
 
-            <tr>
-                <td style="width:100px;">
-                    <b>
-                    {% if contract_A %}
-                        2 
-                    {% else %}
-                        3
-                    {% endif %}
-                    </b>(usted)
-                </td>       
-                <td>
-                    {{tasks}} 
-                </td>
-                <td style="width:200px;">
-                    {{likelihood_contract_A}}  
-                </td>                  
-            </tr>
-            <tr>
-                <td style="width:100px;">
-                    <b>{% if contract_A %}
-                        3 
-                    {% else %}
-                        2
-                    {% endif %}
-                    </b>(el otro)
-                </td>       
-                <td>
-                    {{tasks_other}}
-                </td>
-                <td style="width:200px;">
-                    {{likelihood_contract_A_other}}  
-                </td>                  
-            </tr>
-            </table>
-            {% endif %} 
-        {% endif %} 
-    <p>Haga clic en "Siguiente" para conocer su contrato para la ronda {{round_next}}.</p>
-    {% endif %} 
-    {% next_button %}
+    .active {
+        border-color: #000;
+        border: 10px solid rgba(240, 255, 0, 0.2);
+        border-top: 5px solid #000000;
+        animation: spin 1s linear;
+    }
+
+    .text {
+        position: absolute;
+        top: 40px;
+        left: 130px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: rgba(240, 255, 0, 0.2);
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    table.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .container-chart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chart-canva {
+        display: inline-block;
+    }
+
+    /* .d-none {
+        display: none;
+    } */
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<table id="table-ranking" class="center">
+
+    <tr>
+        <th scope="row">Ranking</th>
+        <th>Puesto y contrato</th>
+        <th>Secuencias correctas</th>
+        <th>Probabilidad Contrato A - ronda {{round_next}} </th>
+    </tr>
+
+    <tr>
+        <th>1</th>
+        <td>Primer puesto de los participantes con <i>Contrato A</i></td>
+        <td>{{tasks_p1}}</td>
+        <td>
+            {% if discrimination == 0 %}
+            50%
+            {% else %}
+            100%
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>2</th>
+        <td>Segundo puesto de los participantes con <i>Contrato A</i></td>
+        <td>{{tasks_p2}}</td>
+        <td>{{likelihood_contract_A_p2}}</td>
+    </tr>
+    <tr>
+        <th>3</th>
+        <td>Primer puesto de los participantes con <i>Contrato B</i></td>
+        <td>{{tasks_p3}}</td>
+        <td>{{likelihood_contract_A_p3}}</td>
+    </tr>
+
+    <tr>
+        <th>4</th>
+        <td>Segundo puesto de los participantes con <i>Contrato B</i></td>
+        <td>{{tasks_p4}}</td>
+        <td>
+            {% if discrimination == 0 %}
+            50%
+            {% else %}
+            0%
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<script>
+    var ranking = '{{position_ranking}}';
+    ranking = parseInt(ranking, 10);
+    console.log(ranking);
+
+    function selectedRow() {
+        var index,
+            table = document.getElementById("table-ranking");
+        for (var i = 0; i < table.rows.length; i++) {
+            if (i == ranking) {
+                table.rows[i].classList.toggle("selected");
+            }
+        }
+    }
+    selectedRow();
+</script>
+<br>
+    {% if discrimination > 0 %}
+        {% if contract_A == 1 and position_contract == 2 or contract_A == 0 and position_contract == 1 %}
+            <p>Haga clic en el botón <b>(circulo)</b>, que está abajo al lado derecho de la gráfica, para ver la asignación del contrato resultante de la <i>Reclasificación</i> para la siguiente ronda.</p>
+        {% else %}
+            <p>Haga clic en el botón <b>(circulo)</b>, que está abajo, para ver la asignación del contrato para la siguiente ronda:</p>
+        {% endif %}
+    {% else %}
+        <p>Haga clic en el botón <b>(circulo)</b>, que está abajo, para ver la asignación del contrato para la siguiente ronda:</p>
+    {% endif %}
+
+<!--Fin Reclasificación -->
+<div class="container-chart">
+    <div id="chart" class="chart-canva d-none" style="height:400px; width:40%"><canvas id="myChart"></canvas></div>
+    <div style="position:relative;">
+        <button type="button" id="btn-load" class="btn-load">
+        </button>
+        <p id="text" class="text"><b>Botón</b><br />Asignación<br />Contrato</p>
+    </div>
+</div>
+{% endif %}
+{% if round < num_rounds %}
+    <br>
+    <p> Luego de dar <I>clic</I> en el botón, por favor oprima "Siguiente" para continuar.</p>
+{% endif %}
+{% next_button %}
+{% endblock %}
+{% block global_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+<script>
+    var contract_A = '{{contract_A}}'
+    var position_contract = '{{position_contract}}'
+    var round = '{{round}}'
+    var num_rounds = '{{num_rounds}}'
+    var discrimination = '{{discrimination}}'
+    if (discrimination>0 && contract_A == 'True' && position_contract == 2 || discrimination>0 && contract_A == 'False' && position_contract == 1 || round == num_rounds) {
+        console.log("Mostrar grafica")
+        document.getElementById("chart").classList.remove("d-none")
+    } else {
+        console.log(" NO Mostrar grafica")
+    }
+    var but = document.getElementsByClassName("otree-btn-next")
+    but[0].style.visibility = "hidden";
+    var round = '{{round_next}}'
+    var contractA = '{{contract_A_tournament}}'
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var you = '{{likelihood_contract_A_number}}';
+    you = parseFloat(you.replace(',', '.')) * 100
+    var other = (100 - you);
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Usted', 'El otro',],
+            datasets: [{
+                label: 'Probabilidad de Contrato A',
+                data: [you, other],
+                backgroundColor: [
+                    'rgba(240, 255, 0, 0.2)',
+                    'rgba(255, 255, 255, 0)'
+                ],
+                borderColor: [
+                    'rgba(0, 0, 0, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Probabilidad Contrato A [%] de participantes en Reclasificación',
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    },
+                    font: { size: 15 }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    document.getElementById("btn-load").addEventListener("click", addLoad);
+    document.getElementById("text").addEventListener("click", addLoad);
+
+    function addLoad() {
+        document.getElementById("btn-load").classList.add("active")
+        if (contractA == 'True') {
+            document.getElementById("text").innerHTML = "Ronda " + round + ":" + "<br/> <h5><b>Contrato A</b></h5>"
+        } else {
+            document.getElementById("text").innerHTML = "Ronda " + round + ":" + "<br/> <h5><b>Contrato B</b></h5>"
+            
+        }
+        document.getElementById("btn-load").style.backgroundColor = "yellow";
+        setTimeout(function () {
+            document.getElementById("btn-load").classList.remove("active")
+            but[0].style.visibility = "visible";
+        }, 500);
+    }
+</script>
 {% endblock %}
